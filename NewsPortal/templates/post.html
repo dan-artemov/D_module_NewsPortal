@@ -1,0 +1,25 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load censor %}
+
+<h1>{% block title %}Эта страница с детализацией статьи{% endblock title %}</h1>
+
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+
+    {% if post %}
+        <h1>Cтатья №:</h1>
+        <hr>
+        <hr>
+        <h2>{{ post.post_header|censor }}</h2>
+        <h3>{{ post.data_create|date:'d M Y' }}</h3>
+        <br>
+        <p class="lead">{{ post.post_text|censor}}</p>
+        <br>
+
+   {% else %}
+       <h2>Статей нет!</h2>
+   {% endif %}
+{% endblock content %}

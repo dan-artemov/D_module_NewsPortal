@@ -80,7 +80,8 @@ class Post(models.Model):
     def dislike(self):
         self.post_rating -= 1
         self.save()
-
+    def __str__(self):
+        return f'{self.post_header}: {self.preview()}'
 
 class PostCategory(models.Model):
     """Модель PostCategory
