@@ -2,6 +2,7 @@ from django.db import models
 # Импортируем встроенную модель User для создания пользователей и связи с ними
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -13,7 +14,8 @@ class Author(models.Model):
     user_rating = models.IntegerField(default=0)  # рейтинг пользователя.
     # связь «один к одному» со встроенной моделью пользователей User;
     users = models.OneToOneField(User, related_name='users_id', on_delete=models.CASCADE)
-
+    def __str__(self):
+        return f'{self.users}'
     def update_rating(self):
         """Метод update_rating() модели Author, который обновляет рейтинг текущего автора
         (метод принимает в качестве аргумента только self).
@@ -37,6 +39,8 @@ class Category(models.Model):
     Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
     Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True)."""
     category = models.CharField(max_length=50, unique=True)  # Имеет единственное поле: название категории
+    def __str__(self):
+        return f'{self.category}'
 
 
 class Post(models.Model):
@@ -82,6 +86,9 @@ class Post(models.Model):
         self.save()
     def __str__(self):
         return f'{self.post_header}: {self.preview()}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 class PostCategory(models.Model):
     """Модель PostCategory

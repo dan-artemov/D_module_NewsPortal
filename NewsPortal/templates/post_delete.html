@@ -1,0 +1,17 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load censor %}
+
+<h1>{% block title %}Статья/Новость{% endblock title %}</h1>
+
+
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Удаляем "{{ object.post_header }}"?</p>
+        <input type="submit" value="Delete" />
+    </form>
+{% endblock content %}
