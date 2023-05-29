@@ -18,7 +18,10 @@
 {% block content %}
 <h1>Публикаций на странице: {{news|length}}</h1>
     {% if news %}
-
+        {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+<!--        {% if perms.news.add_post %}-->
+<!--            <h1><a href="{% url 'news_create' %}">Добавить статью</a></h1>-->
+<!--        {% endif %}-->
         {% for post in news %}
             <hr>
             <hr>
@@ -27,6 +30,15 @@
             <br>
             <p class="lead">{{ post.post_text|truncatewords:20|censor }}</p>
             <br>
+            {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+            <p class="lead">
+            {% if perms.news.change_post %}
+                <a href="{% url 'news_edit' pk=post.id %}">Изменить</a>
+            {% endif %}
+            {% if perms.news.delete_post %}
+                <a href="{% url 'news_delete' post.id %}">/Удалить</a>
+            {% endif %}
+            </p>
         {% endfor %}
    {% else %}
        <h2>Статей нет!</h2>

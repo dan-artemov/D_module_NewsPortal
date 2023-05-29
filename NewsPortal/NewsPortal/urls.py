@@ -21,4 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     path('', include('news.urls')),
+    # # D5.2 добавим urls приложения, с которым ранее работали в этом модуле — “django.contrib.auth”
+    # path('accounts/', include('django.contrib.auth.urls')),
+
+    # Изменим способ регистрации и   оставим только allauth
+    path("accounts/", include("allauth.urls")),
 ]

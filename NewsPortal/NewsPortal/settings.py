@@ -44,8 +44,40 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'fpages',
     'django_filters',
+    # В установленных приложениях необходимо убедиться в наличии некоторых встроенных приложений Django,
+    # которые добавляют:
+    #
+    # пользователей — 'django.contrib.auth'
+    # сообщения — 'django.contrib.messages'
+    # настройки сайта — 'django.contrib.sites'
+
+    # В данный раздел добавьте 3 обязательных приложения allauth
+    # и одно, которое отвечает за выход через Yandex
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',
 ]
 SITE_ID = 1
+
+# По умолчанию после входа Django пытается перенаправить нас на страницу профиля, который не существует.
+#
+# Давайте настроим проект так, чтобы после входа нас перенаправляло на список товаров.
+# Для этого в настройках можно указать путь в переменной LOGIN_REDIRECT_URL
+LOGIN_REDIRECT_URL = "/news"
+
+# В файл настроек проекта мы внесём дополнительные параметры,
+# в которых укажем обязательные и необязательные поля.
+# Обязательность полей остаётся на усмотрение разработчика.
+# В нашем случае мы укажем следующую комбинацию параметров:
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,9 +103,17 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # `allauth` обязательно нужен этот процессор
+                'django.template.context_processors.request',
             ],
         },
     },
+]
+
+# Этого раздела может не быть, добавьте его в указанном виде.
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'

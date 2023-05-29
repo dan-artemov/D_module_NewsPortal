@@ -35,7 +35,16 @@
             <br>
             <p class="lead">{{ post.post_text|truncatewords:20|censor }}</p>
             <br>
-        {% endfor %}
+            {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+            <p class="lead">
+            {% if perms.news.change_post %}
+                <a href="{% url 'news_edit' pk=post.id %}">Изменить</a>
+            {% endif %}
+            {% if perms.news.delete_post %}
+                <a href="{% url 'news_delete' post.id %}">/Удалить</a>
+            {% endif %}
+            </p>
+        {% endfor %}}
    {% else %}
        <h2>Статей нет!</h2>
    {% endif %}
