@@ -39,8 +39,27 @@ class Category(models.Model):
     Категории новостей/статей — темы, которые они отражают (спорт, политика, образование и т. д.).
     Поле должно быть уникальным (в определении поля необходимо написать параметр unique = True)."""
     category = models.CharField(max_length=50, unique=True)  # Имеет единственное поле: название категории
+    # Создадим в данной модели поле subscribers - подписчики на категории (возможно ошибка в работе)
+    # subscribers = models.ManyToManyField(User, blank=True, related_name='categories')
     def __str__(self):
         return f'{self.category}'
+
+#   В рамках исполнения задания по модулю D6 создадим модель Subscriber для хранения подписок пользователей
+class Subscriber(models.Model):
+    """Модель Subscriber служит для хранения подписок пользователей
+        на выбранные категории статей и содержит два поля:
+            user - связь o2m со встроенной моделью User,
+            category - связь o2m с моделью Category."""
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
 
 
 class Post(models.Model):

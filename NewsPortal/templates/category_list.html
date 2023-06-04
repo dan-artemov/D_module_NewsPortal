@@ -1,0 +1,70 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+
+{% load censor %}
+
+<!-- Название у нас будет Новые публикации -->
+{% block title %}
+Новые публикации
+{% endblock title %}
+
+<!-- Выводите новости в следующем виде — заголовок, дата публикации в формате день.месяц.год, затем первые 20 слов текста статьи.
+Можно вывести как списком, так и таблицей. Новости должны выводиться в порядке от более свежей к старой.
+Сверху страницы должно быть выведено количество всех новостей (используется фильтр news|length).
+По ссылке /news/<id новости> должна выводиться детальная информация о новости.
+Заголовок, дата публикации в формате день.месяц.год и полный текст статьи.
+-->
+{% block content %}
+<h1>Публикаций на странице: {{news|length}}</h1>
+    {% if news %}
+        {# Теперь будем проверять не request.user.is_authenticated, а конкретные права #}
+<!--        {% if perms.news.add_post %}-->
+<!--            <h1><a href="{% url 'news_create' %}">Добавить статью</a></h1>-->
+<!--        {% endif %}-->
+        {% for post in news %}
+            <hr>
+            <hr>
+            <h2>{{ post.post_header|censor }}</h2>
+            <h3>{{ post.data_create|date:'d M Y' }}</h3>
+            <br>
+            <p class="lead">{{ post.post_text|truncatewords:20|censor }}</p>
+            <br>
+            {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+            <p class="lead">
+            {% if perms.news.change_post %}
+                <a href="{% url 'news_edit' pk=post.id %}">Изменить</a>
+            {% endif %}
+            {% if perms.news.delete_post %}
+                <a href="{% url 'news_delete' post.id %}">/Удалить</a>
+            {% endif %}
+            </p>
+        {% endfor %}
+   {% else %}
+       <h2>Статей нет!</h2>
+   {% endif %}
+
+{# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?{% url_replace page=1 %}">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

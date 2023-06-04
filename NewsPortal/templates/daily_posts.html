@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статьи за неделю</title>
+</head>
+<body>
+<h2>Добрый день!</h2>
+<h2> Новые статьи за последнюю неделю в категории: {{ category }} </h2>
+
+    {% for article in articles %}
+        <p><a href="{{article.link}}">{{ article.header }}</a></p>
+        <hr>
+        <p>{{ article.text }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'fpages',
     'django_filters',
+
+    "django_apscheduler",
     # В установленных приложениях необходимо убедиться в наличии некоторых встроенных приложений Django,
     # которые добавляют:
     #
@@ -65,7 +67,8 @@ SITE_ID = 1
 # Давайте настроим проект так, чтобы после входа нас перенаправляло на список товаров.
 # Для этого в настройках можно указать путь в переменной LOGIN_REDIRECT_URL
 LOGIN_REDIRECT_URL = "/news"
-
+# LOGOUT_REDIRECT_URL = "/accounts/signup"
+LOGOUT_REDIRECT_URL = "/news"
 # В файл настроек проекта мы внесём дополнительные параметры,
 # в которых укажем обязательные и необязательные поля.
 # Обязательность полей остаётся на усмотрение разработчика.
@@ -174,3 +177,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+# блок кода настроек нашего проекта работы с Yandex-почтой
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "dan-artemov"
+EMAIL_HOST_PASSWORD = "nvwxchkbirvcujvm"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = "dan-artemov@yandex.ru"
+
+SERVER_EMAIL = "dan-artemov@yandex.ru"
+MANAGERS = (
+    ('Ivan', 'dan-artemov@yandex.ru'),
+    ('Petr', 'dan-artemov@yandex.ru'),
+)
+ADMINS = (
+    ('anton', 'dan-artemov@yandex.ru'),
+)
+
