@@ -157,8 +157,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Krasnoyarsk'
 USE_I18N = True
 
 USE_TZ = True
@@ -198,4 +198,29 @@ MANAGERS = (
 ADMINS = (
     ('anton', 'dan-artemov@yandex.ru'),
 )
+# CELERY_BROKER_URL — указывает на URL брокера сообщений (Redis). По умолчанию он находится на порту 6379.
+# CELERY_RESULT_BACKEND — указывает на хранилище результатов выполнения задач.
+# CELERY_ACCEPT_CONTENT — допустимый формат данных.
+# CELERY_TASK_SERIALIZER — метод сериализации задач.
+# CELERY_RESULT_SERIALIZER — метод сериализации результатов
+# Если вы используете Redis Labs, то переменные CELERY_BROKER_URL и CELERY_RESULT_BACKEND должны строиться по шаблону:
+#
+# redis://default:iSiPVzkDinwSHJcCw9aWosNG98TOekxQ@redis-10854.c91.us-east-1-3.ec2.cloud.redislabs.com:10854
 
+CELERY_BROKER_URL = 'redis://default:iSiPVzkDinwSHJcCw9aWosNG98TOekxQ@redis-10854.c91.us-east-1-3.ec2.cloud.redislabs.com:10854'
+CELERY_RESULT_BACKEND = 'redis://default:iSiPVzkDinwSHJcCw9aWosNG98TOekxQ@redis-10854.c91.us-east-1-3.ec2.cloud.redislabs.com:10854'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+broker_connection_retry_on_startup = True
+
+
+# Celery с версией выше 4+ не поддерживается Windows.
+# Поэтому если у вас версия Python 3.10 и выше, запускайте Celery, добавив в команду флаг: --polo=solo.
+# celery -A NewsPortal worker -l INFO --polo=solo
+# celery  -A NewsPortal worker -l INFO --pool=solo
+# Для запуска периодических задач на Windows запустите в разных окнах терминала:
+#
+# celery  -A NewsPortal worker -l INFO --polo=solo
+# и
+# celery  -A NewsPortal beat -l INFO

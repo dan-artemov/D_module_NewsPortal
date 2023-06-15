@@ -16,6 +16,11 @@ from django.views.decorators.csrf import csrf_protect
 # миксин PermissionRequiredMixin, чтобы Django проверял у пользователя, наличие указанных нами прав.
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+# from django.views import View
+#
+# from django.http import HttpResponse
+# from datetime import timedelta
+# from django.utils import timezone
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
@@ -171,3 +176,9 @@ def subscriptions(request):
         'subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
+
+# class IndexView(View):
+#     def get(self, request):
+#         printer.apply_async([10], eta=timezone.now() + timedelta(seconds=5))
+#         hello.delay()
+#         return HttpResponse('Hello!')
