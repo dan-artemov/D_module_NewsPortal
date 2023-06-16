@@ -1,0 +1,8 @@
+NewsPortal/NewsPortal/__pycache__/
+NewsPortal/news/__pycache__/
+NewsPortal/news/migrations/__pycache__/
+NewsPortal/fpages/__pycache__/
+NewsPortal/news/templatetags/__pycache__/*
+NewsPortal/news/templatetags/__pycache__/censor.cpython-311.pyc
+NewsPortal/accounts/__pycache__/
+NewsPortal/news/management/commands/__pycache__/
