@@ -13,11 +13,17 @@
         <h1>Cтатья:</h1>
         <hr>
         <hr>
-        <h2>{{ post.post_header|censor }}</h2>
+        <h2><a href="{% url 'post_detail' pk=post.id %}">{{ post.post_header|censor }}</a></h2>
         <h3>{{ post.data_create|date:'d M Y' }}</h3>
         <br>
         <p class="lead">{{ post.post_text|censor}}</p>
         <br>
+        {% if perms.news.change_post %}
+            <a href="{% url 'news_edit' pk=post.id %}">Изменить</a>
+        {% endif %}
+        {% if perms.news.delete_post %}
+            <a href="{% url 'news_delete' post.id %}">/Удалить</a>
+        {% endif %}
 
    {% else %}
        <h2>Статей нет!</h2>

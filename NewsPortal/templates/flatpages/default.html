@@ -23,24 +23,28 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'post_list' %}">Главная</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'post_search' %}">Поиск</a></li>
-
-                        {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">{{request.user.username}}</a>-->
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                {% if perms.news.add_post %}
-                                <li><a class="dropdown-item" href="{% url 'post_create' %}">Добавить статью</a></li>
-                                <li><a class="dropdown-item" href="{% url 'news_create' %}">Добавить новость</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                {% endif %}
-                                <li><a class="dropdown-item" href="{% url 'subscriptions' %}">Подписки на рассылку</a></li>
-                                <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                        {% endif %}
+                        {% load cache %} <!-- Загружаем кэширование -->
+                            {% cache 30 dropdown %} <!-- Кэшируем отдельный блок на 30 секунд -->
+                                {% block dropdown %}
+                                   {% if user.is_authenticated %}
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">{{request.user.username}}</a>-->
+                                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                            {% if perms.news.add_post %}
+                                            <li><a class="dropdown-item" href="{% url 'post_create' %}">Добавить статью</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'news_create' %}">Добавить новость</a></li>
+                                            <li><hr class="dropdown-divider" /></li>
+                                            {% endif %}
+                                            <li><a class="dropdown-item" href="{% url 'subscriptions' %}">Подписки на рассылку</a></li>
+                                            <li><hr class="dropdown-divider" /></li>
+                                            <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                                    {% endif %}
+                                {% endblock dropdown %}
+                            {% endcache %}
 
                     </ul>
                 </div>
