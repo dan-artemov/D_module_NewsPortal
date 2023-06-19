@@ -24,8 +24,8 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'post_list' %}">Главная</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'post_search' %}">Поиск</a></li>
                         {% load cache %} <!-- Загружаем кэширование -->
-                            {% cache 30 dropdown %} <!-- Кэшируем отдельный блок на 30 секунд -->
-                                {% block dropdown %}
+<!--                            {% cache 30 dropdown %} &lt;!&ndash; Кэшируем отдельный блок на 30 секунд &ndash;&gt;-->
+<!--                                {% block dropdown %}-->
                                    {% if user.is_authenticated %}
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">{{request.user.username}}</a>-->
@@ -43,8 +43,8 @@
                                     {% else %}
                                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                                     {% endif %}
-                                {% endblock dropdown %}
-                            {% endcache %}
+<!--                                {% endblock dropdown %}-->
+<!--                            {% endcache %}-->
 
                     </ul>
                 </div>

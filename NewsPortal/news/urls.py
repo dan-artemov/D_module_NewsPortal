@@ -11,10 +11,12 @@ urlpatterns = [
    # а Django ожидает функцию, нам надо представить этот класс в виде view.
    # Для этого вызываем метод as_view.
 
-   path('news/', cache_page(60)(PostList.as_view()), name='post_list'),# Добавим кэширование главной страницы на 1 минуту
+   # path('news/', cache_page(60)(PostList.as_view()), name='post_list'),# Добавим кэширование главной страницы на 1 минуту
+   path('news/', PostList.as_view(), name='post_list'),
    # pk — это первичный ключ товара, который будет выводиться у нас в шаблон
    # int — указывает на то, что принимаются только целочисленные значения
-   path('news/<int:pk>', cache_page(60*5)(PostDetail.as_view()), name='post_detail'), # Добавим кэширование страницы с деталями поста на 5 минуту
+   # path('news/<int:pk>', cache_page(60*5)(PostDetail.as_view()), name='post_detail'), # Добавим кэширование страницы с деталями поста на 5 минуту
+   path('news/<int:pk>', PostDetail.as_view(), name='post_detail'),
    path('news/search/', PostSearch.as_view(), name='post_search'),
 
    path('news/create/', NewsCreate.as_view(), name='news_create'),

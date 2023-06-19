@@ -13,6 +13,8 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 
 
+from django.core.cache import cache # импортируем наш кэш
+
 # миксин PermissionRequiredMixin, чтобы Django проверял у пользователя, наличие указанных нами прав.
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
@@ -76,6 +78,19 @@ class PostDetail(DetailView):
     template_name = 'post.html'
     # Название объекта, в котором будет выбранный пользователем продукт
     context_object_name = 'post'
+
+
+    def get_object(self, *args, **kwargs):  # переопределяем метод получения объекта, как ни странно
+        # кэш очень похож на словарь, и метод get действует так же.
+        # Он забирает значение по ключу, если его нет, то забирает None.
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        # если объекта нет в кэше, то получаем его и записываем в кэш
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+            return obj
+
 
 # Добавляем новое представление для создания Статьи.
 class PostCreate(PermissionRequiredMixin, CreateView):
