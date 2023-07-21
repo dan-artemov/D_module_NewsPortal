@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@g7k=f4*$jpf%m=jldyzqf8q(w4uvm^mnp!%$xv7e-z3pd9957
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -231,5 +231,110 @@ CACHES = {
         'LOCATION': os.path.join(BASE_DIR, 'cache_files'),
         # Указываем, куда будем сохранять кэшируемые файлы!
         # Не забываем создать папку cache_files внутри папки с manage.py!
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'console_warning', 'console_error', 'general'],
+            # 'handlers': ['console', 'console_warning', 'console_error', 'general'],
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['errors', 'errors_email'],
+            'level': 'DEBUG',
+        },
+        'django.server': {
+            'handlers': ['errors', 'errors_email'],
+            'level': 'DEBUG',
+        },
+        'django.template': {
+            'handlers': ['errors'],
+            'level': 'DEBUG',
+        },
+        'django.db.backends': {
+            'handlers': ['errors'],
+            'level': 'DEBUG',
+        },
+        'django.security': {
+            'handlers': ['security'],
+            'level': 'DEBUG',
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_format'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'warning_console_and_error_email'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'errors_format'
+        },
+        'general': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'general_format'
+        },
+        'errors': {
+
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'errors_format'
+        },
+        'security': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'general_format'
+        },
+        'errors_email': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'warning_console_and_error_email'
+        },
+
+    },
+    'formatters': {
+        'console_format': {
+            'format': '{asctime} {levelname} {message} ',
+            'style': '{',
+        },
+        'warning_console_and_error_email': {
+            'format': '{asctime} {levelname} {message} {pathname}',
+            'style': '{',
+        },
+        'general_format': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'style': '{',
+        },
+        'errors_format': {
+            'format': '{asctime} {levelname} {message} {pathname} {exc_info}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
     }
 }

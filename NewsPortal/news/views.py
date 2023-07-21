@@ -18,12 +18,21 @@ from django.core.cache import cache # импортируем наш кэш
 # миксин PermissionRequiredMixin, чтобы Django проверял у пользователя, наличие указанных нами прав.
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
+# Импортируем библиотеку для работы с логами
+# import logging
+#
+# # Создадим экземпляр класса logging
+# logger = logging.getLogger(__name__)
+
+
+
 # from django.views import View
 #
 # from django.http import HttpResponse
 # from datetime import timedelta
 # from django.utils import timezone
 class PostList(ListView):
+
     # Указываем модель, объекты которой мы будем выводить
     model = Post
     # Поле, которое будет использоваться для сортировки объектов

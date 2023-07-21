@@ -1,0 +1,4 @@
+2023-07-21 22:10:10,562 WARNING Not Found: /pages/ E:\SkillFactory\D_Project_NewsPortal\venv\Lib\site-packages\django\utils\log.py None
+2023-07-21 22:10:10,563 WARNING "GET /pages/ HTTP/1.1" 404 4532 E:\SkillFactory\D_Project_NewsPortal\venv\Lib\site-packages\django\core\servers\basehttp.py None
+2023-07-21 22:16:18,074 WARNING Not Found: /pages/ E:\SkillFactory\D_Project_NewsPortal\venv\Lib\site-packages\django\utils\log.py None
+2023-07-21 22:16:18,075 WARNING "GET /pages/ HTTP/1.1" 404 4532 E:\SkillFactory\D_Project_NewsPortal\venv\Lib\site-packages\django\core\servers\basehttp.py None
