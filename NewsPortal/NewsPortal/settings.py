@@ -298,7 +298,7 @@ LOGGING = {
             'formatter': 'errors_format'
         },
         'security': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'security.log',
             'formatter': 'general_format'
